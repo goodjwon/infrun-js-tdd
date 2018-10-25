@@ -1,6 +1,6 @@
-var App = App ||{}
+var App = App || {}
 
-App.ClickCounter = (clickCounter, updateEl) => {
+App.ClickCounterView = (clickCounter, updateEl) => {
     return {
         updateView(){
             updateEl.innerHTML = clickCounter.getValue();
