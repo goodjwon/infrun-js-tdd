@@ -1,10 +1,26 @@
 describe('App.ClickCounterView',()=>{
-    let updateEl, clickCounter, view
+    let updateEl, triggerEl, clickCounter, view
 
     beforeEach(()=>{
-         clickCounter =App.ClickCounter();
-         updateEl = document.createElement('span');
-         view = App.ClickCounterView(clickCounter, updateEl);
+        updateEl = document.createElement('span');
+        triggerEl = document.createElement('button');
+        clickCounter = App.ClickCounter();
+        view = App.ClickCounterView(clickCounter, {updateEl, triggerEl});
+    });
+
+
+    describe('네거티브 테스트', ()=> {
+        it('ClickCounter 를 주입하지 않으면 에러를 던진다.', () => {
+            const actual = () => App.ClickCounterView(null, {updateEl});
+            expect(actual).toThrowError(App.ClickCounterView.messages.noClickCounter);
+
+        })
+        //
+        // it('updateEl 주입하지 않으면 에러를 던진다.', () => {
+        //     const actual = () => App.ClickCounterView(clickCounter, {triggerEl});
+        //     expect(actual).toThrowError(App.ClickCounterView.messages.noUpdateEl);
+        //
+        // })
     })
 
     describe('updateView()', ()=>{
@@ -14,4 +30,28 @@ describe('App.ClickCounterView',()=>{
             expect(updateEl.innerHTML).toBe(counterValue.toString());
         })
     })
+
+
+    describe('increaseAndViewUpdate 는 ', ()=>{
+        it('clinckCounter의 increase 를 실행한다. ',  ()=>{
+            spyOn(clickCounter, 'increase')
+            view.increaseAndUpdateView()
+            expect(clickCounter.increase).toHaveBeenCalled();
+        });
+
+        it('updateView를 실행한다.', ()=>{
+            spyOn(view, 'updateView')
+            view.increaseAndUpdateView()
+            expect(view.updateView).toHaveBeenCalled();
+
+        });
+    })
+
+    it('클릭 이벤트가 발생하면 increaseAndUpdateView를 실행한다.',()=>{
+        spyOn(view, 'increaseAndUpdateView')
+        triggerEl.click();
+        expect(view.increaseAndUpdateView).toHaveBeenCalled();
+    })
+
+
 })
