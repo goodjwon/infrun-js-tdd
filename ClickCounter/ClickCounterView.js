@@ -1,30 +1,22 @@
 var App = App || {}
 
-App.ClickCounterView = (clickCounter, options) => {
+App.ClickCountView = (clickCounter, updateEl) => {
+    if (!clickCounter) throw new Error(App.ClickCountView.messages.noClickCounter)
+    if (!updateEl) throw new Error(App.ClickCountView.messages.noUpdateEl)
 
-    if(!clickCounter) throw Error(App.ClickCounterView.message.noClickCounter);
-    if(!options.updateEl) throw new Error(App.ClickCounterView.message.noUpdateEl)
-
-    const view ={
-        updateView(){
-            options.updateEl.innerHTML = clickCounter.getValue();
+    return {
+        updateView() {
+            updateEl.innerHTML = clickCounter.getValue()
         },
 
-        increaseAndUpdateView(){
-            clickCounter.increase();
-            this.updateView();
+        increaseAndUpdateView() {
+            clickCounter.increase()
+            this.updateView()
         }
     }
-
-
-    options.triggerEl.addEventListener('click',()=>{
-        view.increaseAndUpdateView();
-    })
-
-    return view;
 }
 
-App.ClickCounterView.messages = {
-    noClickCounter: 'clickCount를 주입해야 합니다.',
-    noUpdateEl: 'updateEl를 주입해야 합니다.'
+App.ClickCountView.messages = {
+    noClickCounter: 'clickCount를 주입해야 합니다',
+    noUpdateEl: 'updateEl를 주입해야 합니다'
 }
